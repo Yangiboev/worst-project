@@ -8,7 +8,6 @@ import { toHex } from './conversion-utils.js';
 
 export const currentDir = path.resolve(new URL(import.meta.url).pathname, '..');
 import * as Rx from 'rxjs';
-import { send } from 'process';
 
 
 const app = express();
@@ -35,10 +34,12 @@ app.get('/seed/:seed', (req: Request, res: Response) => {
     res.sendFile(path.resolve(currentDir, '..', 'public'));
 });
 
-app.get('/add-wallet', async (req: Request, res: Response) => {
+app.post('/add-wallet', async (req: Request, res: Response) => {
     const seed = toHex(api.randomBytes(32))
+    logger.info(`New wallet seed is: ${seed}`);
     const wallet = await api.buildWalletAndWaitForFunds(config, seed);
     wallet.start();
+    logger.info(`Your wallet started`);
     const state = await Rx.firstValueFrom(wallet.state());
     logger.info(`Your wallet seed is: ${seed}`);
     logger.info(`Your wallet address is: ${state.address}`);
@@ -49,19 +50,22 @@ app.get('/add-wallet', async (req: Request, res: Response) => {
     })
 });
 
-app.get('/seed/:seed/submit-sales', async (req: Request, res: Response) => {
-    const {seed} = req.params
+app.post('/seed/:seed/submit-sales', async (req: Request, res: Response) => {
+    const { seed } = req.params
     const {  amount } = req.body;
     logger.info("Amount to sell: ", amount)
     logger.info("Seed to get wallet: ", seed)
     const wallet = await api.buildWalletAndWaitForFunds(config, seed);
     wallet.start();
-    
+    logger.info(`Your wallet started`);
+
     const providers = await api.configureProviders(wallet, config);
+    logger.info(`Configured providers`);
     const counterContract = await api.deploy(providers)
     logger.info(`Deployed contract at address: ${counterContract.finalizedDeployTxData.contractAddress}`);
     
     const { txHash, blockHeight } = await api.increment(counterContract);
+    logger.info(`Transaction ${txHash} added in block ${blockHeight}`);
 
     res.send({
         "contract_address": counterContract.finalizedDeployTxData.contractAddress,
@@ -71,17 +75,15 @@ app.get('/seed/:seed/submit-sales', async (req: Request, res: Response) => {
 
 })
 
-
 interface FormData {
     seed: string;
 }
 
 app.post('/submit-seed', async (req: Request, res: Response) => {
     const {  seed }: FormData = req.body;
-    logger.info('Form submission received:');
     logger.info('Name:', seed);
 
-    res.send({"wallet": "123"})
+    res.send({"seed": seed})
 });
 
 // Start the server
