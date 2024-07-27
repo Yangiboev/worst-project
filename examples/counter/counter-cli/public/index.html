@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Manager</title>
+    <!-- Materialize CSS CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Font: Chivo -->
+    <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="initialView" class="container center-align">
+        <button id="openModal" class="btn-large">Add Sales Wallet</button>
+        <button id="openExistingWallet" class="btn-large">Use Existing</button>
+    </div>
+
+    <div id="tableSection" class="container" style="display: none;">
+        <h2>Sales Overview</h2>
+        <div class="button-group">
+            <button id="openModalFromTable" class="btn-small">Add New Sale</button>
+            <button id="submitSales" class="btn-small" style="display: none;">Submit Sale</button>
+            <button id="submitAll" class="btn-small" style="display: none;">Submit All</button>
+        </div>
+        <table id="salesTable" class="striped">
+            <thead>
+                <tr>
+                    <th>Client Name</th>
+                    <th>Product Name</th>
+                    <th>Sale Amount</th>
+                    <th>Currency</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Sales rows will be added here -->
+            </tbody>
+        </table>
+    </div>
+    <div id="seedModal" class="modal">
+        <div class="modal-content">
+            <h4>Enter Your Wallet Seed</h4>
+            <div class="input-field">
+                <input id="seed" type="text">
+                <label for="seed">Seed</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="submitSeed" class="modal-close waves-effect waves-green btn" >Open Existing Wallet</button>
+        </div>
+    </div>
+      <!-- Congratulation Modal Structure -->
+      <div id="congratsModal" class="modal">
+        <div class="modal-content">
+            <h4>Congratulations!</h4>
+            <p>Your seed has been submitted successfully.</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" id="closeCongratsModal" class="modal-close waves-effect waves-green btn">OK</a>
+        </div>
+    </div>
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4>Enter Sale Details</h4>
+            <div class="input-field">
+                <input id="modalClientName" type="text">
+                <label for="modalClientName">Client Name</label>
+            </div>
+            <div class="input-field">
+                <input id="modalProductName" type="text">
+                <label for="modalProductName">Product Name</label>
+            </div>
+            <div class="input-field">
+                <input id="modalSaleAmount" type="number" step="0.01">
+                <label for="modalSaleAmount">Sale Amount</label>
+            </div>
+            <div class="input-field">
+                <select id="modalCurrency">
+                    <option value="" disabled selected>Choose Currency</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                    <option value="JPY">JPY</option>
+                    <option value="CNY">CNY</option>
+                    <option value="HKD">HKD</option>
+                    <option value="ADA">ADA</option>
+                    <option value="USDM">USDM</option>
+                </select>
+                <label>Currency</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" id="addSale" class="modal-close waves-effect waves-green btn">Add Sale</a>
+        </div>
+    </div>
+
+    <!-- Materialize JS CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Custom JS -->
+    <script src="scripts.js"></script>
+</body>
+</html>

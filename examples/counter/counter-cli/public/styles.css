@@ -1,0 +1,62 @@
+/* Ensure that Chivo font is applied */
+@import url('https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&display=swap');
+
+body {
+    font-family: 'Chivo', sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+#initialView {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#tableSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#salesTable {
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-large {
+    font-size: 1.2rem;
+}
+
+.btn-small {
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
+
+.center-align {
+    text-align: center;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 10px;
+}
