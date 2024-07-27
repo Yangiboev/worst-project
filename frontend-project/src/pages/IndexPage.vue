@@ -55,26 +55,25 @@ export default defineComponent({
   methods: {
     async submitForm() {
       this.submitted = true;
-
       if (!this.emptySeed) {
         await this.router.push({
-          path: `/${this.wallet_seed}/`
+          path: `/seed/${this.wallet_seed}/`
         });
       }
     },
     async addNewWallet() {
       try {
-        let response = await axios.post('/add_wallet/');
+        let response = await axios.post('http://localhost:3000/add-wallet/');
         if (response.data.seed) {
           await this.router.push({
-            path: `/${response.data.seed}/`
+            path: `/seed/${response.data.seed}/`
           });
         } else {
           alert('error');
         }
       } catch {
         await this.router.push({
-          path: '/ascascascasc5a45485/'
+          path: `/seed/${this.wallet_seed}/`
         });
       }
     },

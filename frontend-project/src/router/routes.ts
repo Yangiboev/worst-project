@@ -4,11 +4,16 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+    children: [{ path: '/', component: () => import('pages/IndexPage.vue') }],
+  },
+  {
+    path: '/seed/:wallet_seed',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: '', component: () => import('pages/wallet/IndexPage.vue') }],
   },
 
   {
-    path: '/:wallet_seed/',
+    path: '/confirmation',
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: '', component: () => import('pages/congrats_page/IndexPage.vue') }],
   },

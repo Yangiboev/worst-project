@@ -3,27 +3,27 @@
     <h1 class="text-h3 text-weight-medium">Sales Overview</h1>
 
     <div class="flex justify-end items-center q-mb-lg">
-      <AddSalesDialog @created="getSales()" />
+      <AddSalesDialog @created="addSale" />
       <q-btn @click="submitSales()" color="secondary" label="Submit Sale" class="q-mr-md" />
     </div>
 
     <div class="q-mt-lg">
       <q-markup-table class="" flat>
         <thead>
-        <tr>
-          <th class="text-left">Client Name</th>
-          <th class="text-right">Product Name</th>
-          <th class="text-right">Sales Amount</th>
-          <th class="text-right">Currency</th>
-        </tr>
+          <tr>
+            <th class="text-left">Client Name</th>
+            <th class="text-right">Product Name</th>
+            <th class="text-right">Sales Amount</th>
+            <th class="text-right">Currency</th>
+          </tr>
         </thead>
         <tbody>
-        <tr>
-          <td class="text-left">Frozen Yogurt</td>
-          <td class="text-right">159</td>
-          <td class="text-right">6</td>
-          <td class="text-right">USD</td>
-        </tr>
+          <tr v-for="sale in sales" :key="sale.id">
+            <td class="text-left">{{ sale.client_name }}</td>
+            <td class="text-right">{{ sale.product_name }}</td>
+            <td class="text-right">{{ sale.sale_amount }}</td>
+            <td class="text-right">{{ sale.currency }}</td>
+          </tr>
         </tbody>
       </q-markup-table>
     </div>
@@ -31,45 +31,52 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { useRoute } from 'vue-router';
+import { defineComponent, ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import AddSalesDialog from '../../components/dialogs/AddSales.vue';
-import axios from 'axios';
+
+interface Sale {
+  id: number;
+  client_name: string;
+  product_name: string;
+  sale_amount: number;
+  currency: string;
+}
 
 export default defineComponent({
   name: 'IndexPage',
-  data() {
-    let route = useRoute();
-    return {
-      route: route,
-      sales: []
-    };
-  },
-  methods: {
-    async getSales() {
-      try {
-        let response = await axios.get('/sales_list/');
-        this.sales = response.data.results;
-      } catch {
-        alert('Could not get the api list');
-      }
-    },
-    async submitSales() {
-      this.$router.push({
-        path: '/submit-sales'
-      });
-    }
-  },
   components: {
     AddSalesDialog
+  },
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+    const sales = ref<Sale[]>([]);
+
+    const addSale = (newSale: Omit<Sale, 'id'>) => {
+      const id = sales.value.length + 1;
+      sales.value.push({ ...newSale, id });
+
+      // Navigate to confirmation page with the transaction ID
+      router.push({ path: '/confirmation', query: { id: id.toString(), block: '123' } });
+    };
+
+    const submitSales = () => {
+      // Handle submission logic if needed
+      console.log('Submit Sales clicked');
+    };
+
+    return {
+      route,
+      sales,
+      addSale,
+      submitSales
+    };
   },
   computed: {
     wallet_seed() {
       return this.route.params.wallet_seed || null;
     }
-  },
-  mounted() {
-    this.getSales();
   }
 });
 </script>
